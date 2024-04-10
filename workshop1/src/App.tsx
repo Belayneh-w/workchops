@@ -187,50 +187,60 @@ const makePost = () => {
         {/* comment list */}
         <div className="reply-list">
           {/* comment item */}
-          {commentList.map((item) => (
-            <div className="reply-item" key={item.rpid}>
-              {/* profile */}
-              <div className="root-reply-avatar">
-                <div className="bili-avatar">
-                  <img className="bili-avatar-img" alt="" />
-                </div>
-              </div>
-
-              <div className="content-wrap">
-                {/* username */}
-                <div className="user-info">
-                  <div className="user-name">{item.user.uname}</div>
-                </div>
-                {/* comment content */}
-                <div className="root-reply">
-                  <span className="reply-content">{item.content}</span>
-                  <div className="reply-info">
-                    {/* comment created time */}
-                    <span className="reply-time">{item.ctime}</span>
-                    {/* total likes */}
-                    <span className="reply-time">Like:{item.like}</span>
-
-                    {item.user.uid === user.uid && (
-                      <span
-                        className="delete-btn"
-                        onClick={() => deleteComment(item.rpid)}
-                      >
-                        Delete
-                      </span>
-                    )}
-                    {/* same as */}
-                    {/* {item.user.uid===user.uid?(
-                      <span className="delete-btn">Delete</span>
-                    ): ''} */}
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
+          {commentList.map((item) =>  <Item item={item} onDeleteComment = {deleteComment}/>
+          )}
         </div>
       </div>
     </div>
   );
 }
 
+
+type ItemProps = {
+  item: Comment;
+  onDeleteComment:(rpid:number |string)=>void;
+};
+function Item (props:ItemProps){
+  const { item, onDeleteComment } = props;
+  return (
+    <div className="reply-item" key={item.rpid}>
+      {/* profile */}
+      <div className="root-reply-avatar">
+        <div className="bili-avatar">
+          <img className="bili-avatar-img" alt="" />
+        </div>
+      </div>
+
+      <div className="content-wrap">
+        {/* username */}
+        <div className="user-info">
+          <div className="user-name">{item.user.uname}</div>
+        </div>
+        {/* comment content */}
+        <div className="root-reply">
+          <span className="reply-content">{item.content}</span>
+          <div className="reply-info">
+            {/* comment created time */}
+            <span className="reply-time">{item.ctime}</span>
+            {/* total likes */}
+            <span className="reply-time">Like:{item.like}</span>
+
+            {item.user.uid === user.uid && (
+              <span
+                className="delete-btn"
+                onClick={() => onDeleteComment(item.rpid)}
+              >
+                Delete
+              </span>
+            )}
+            {/* same as */}
+            {/* {item.user.uid===user.uid?(
+                      <span className="delete-btn">Delete</span>
+                    ): ''} */}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 export default App
