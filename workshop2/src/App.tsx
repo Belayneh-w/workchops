@@ -68,6 +68,7 @@ const App = () => {
     async function getDefaultList(){
 const response = await fetch("http://localhost:3004/list");
 const data =await response.json()
+
 setCommentList(data)
     }
     getDefaultList()

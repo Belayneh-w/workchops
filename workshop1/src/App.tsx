@@ -187,8 +187,11 @@ const makePost = () => {
         {/* comment list */}
         <div className="reply-list">
           {/* comment item */}
-          {commentList.map((item) =>  <Item item={item} onDeleteComment = {deleteComment}/>
-          )}
+          {commentList.map(item =>  <Item {...item} onDeleteComment = {deleteComment}/>)}
+
+          {/* //same as
+          //  {commentList.map(item =>  <Item rpid = {item.rpid} user={item.user} content={item.content} ctime={item.ctime} like={item.like}  onDeleteComment = {deleteComment}/> */}
+          {/* // )} */}
         </div>
       </div>
     </div>
@@ -197,13 +200,21 @@ const makePost = () => {
 
 
 type ItemProps = {
-  item: Comment;
-  onDeleteComment:(rpid:number |string)=>void;
+  rpid: number | string,
+  user: {
+    uid: string,
+    avatar: string,
+    uname: string,
+  };
+  content: string,
+  ctime: string,
+  like: number,
+  onDeleteComment: (rpid: number | string) => void;
 };
 function Item (props:ItemProps){
-  const { item, onDeleteComment } = props;
+ const { rpid, user:myUser, content, ctime,like, onDeleteComment } = props;
   return (
-    <div className="reply-item" key={item.rpid}>
+    <div className="reply-item" key={rpid}>
       {/* profile */}
       <div className="root-reply-avatar">
         <div className="bili-avatar">
@@ -214,21 +225,21 @@ function Item (props:ItemProps){
       <div className="content-wrap">
         {/* username */}
         <div className="user-info">
-          <div className="user-name">{item.user.uname}</div>
+          <div className="user-name">{user.uname}</div>
         </div>
         {/* comment content */}
         <div className="root-reply">
-          <span className="reply-content">{item.content}</span>
+          <span className="reply-content">{content}</span>
           <div className="reply-info">
             {/* comment created time */}
-            <span className="reply-time">{item.ctime}</span>
+            <span className="reply-time">{ctime}</span>
             {/* total likes */}
-            <span className="reply-time">Like:{item.like}</span>
+            <span className="reply-time">Like:{like}</span>
 
-            {item.user.uid === user.uid && (
+            {myUser.uid === user.uid && (
               <span
                 className="delete-btn"
-                onClick={() => onDeleteComment(item.rpid)}
+                onClick={() => onDeleteComment(rpid)}
               >
                 Delete
               </span>
